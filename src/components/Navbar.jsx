@@ -1,26 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from './ui/Button';
 import Profile from './Profile';
 import { BsCupStraw, BsFillCartFill, BsUpload } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import { googleLogin, googleLogout } from '../api/firebase';
+
 import { useAuthContext } from '../context/authContext';
 
 export default function Navbar() {
-    const user = useAuthContext();
-    const [login, setLogin] = useState(user);
-    console.log(login);
-
-    const handleClick2 = () => {
-        console.log('로그아웃 클릭');
-        googleLogout().then(result => setLogin(result));
-    };
-
-    const handleClick = () => {
-        console.log('로그인 클릭');
-        // googleLogin().then(result => setLogin(result));
-        googleLogin();
-    };
+    const { user, googleLogin, googleLogout } = useAuthContext();
 
     return (
         <nav className="flex justify-between p-4 mb-4 items-center border-b-2">
@@ -39,23 +26,23 @@ export default function Navbar() {
                         <Link to={'all'}>Drinks</Link>
                     </li>
                     <li>
-                        {login && (
+                        {user && (
                             <Link to={'cart'}>
                                 <BsFillCartFill />
                             </Link>
                         )}
                     </li>
                     <li>
-                        {login && login.isAdmin && (
+                        {user && user.isAdmin && (
                             <Link to={'new'}>
                                 <BsUpload />
                             </Link>
                         )}
                     </li>
                 </ul>
-                {login && <Profile user={login} />}
-                {!login && <Button text={'Login'} onClick={handleClick} />}
-                {login && <Button text={'LogOut'} onClick={handleClick2} />}
+                {user && <Profile user={user} />}
+                {!user && <Button text={'Login'} onClick={googleLogin} />}
+                {user && <Button text={'LogOut'} onClick={googleLogout} />}
             </div>
         </nav>
     );

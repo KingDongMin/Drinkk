@@ -21,25 +21,14 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
 
+
 export async function googleLogin(){
-//     return signInWithPopup(auth, provider)
-//   .then((result) => {
-//     const user = result.user;
-//     return checkAdmin(user);
-//   }).catch((error) => {
-//   });
-  signInWithPopup(auth, provider);
+    signInWithPopup(auth, provider).catch(error=> console.log(`Login error : ${error}`));
 }
 
 
 export async function googleLogout(){
-    return signOut(auth).then(() => {
-        // Sign-out successful.
-        return null;
-      }).catch((error) => {
-        // An error happened
-        console.log("로그아웃 실패"+error)
-      });
+    signOut(auth).catch(error=>console.log(`Logout error : ${error}`))
 }
 
 function checkAdmin(user){
@@ -56,15 +45,13 @@ export function onAuthState(callback){
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const checkUser = checkAdmin(user);
-            console.log(checkUser)
             callback(checkUser);
-        } else {
-          // User is signed out
-          // ...
-            console.log('현재 로그인 null')
-            return null;
+            return;
         }
-    });
-
+        callback(user);
+        return; 
+    })
 }
+
+
 
