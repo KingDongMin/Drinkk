@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthState } from '../api/firebase';
+import { googleLogin, googleLogout } from '../api/firebase';
 
 const AuthContext = createContext();
 
@@ -10,7 +11,11 @@ export function AuthContextProvider({ children }) {
         onAuthState(user => setUser(user));
     }, []);
 
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={{ user, googleLogin, googleLogout }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export function useAuthContext() {
