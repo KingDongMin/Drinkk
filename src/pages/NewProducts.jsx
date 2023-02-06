@@ -23,6 +23,7 @@ export default function NewProducts() {
             >
                 제품 추가
             </h1>
+
             <div className="relative w-4/12 text-center bg-red-200">
                 {imgError && (
                     <p className="absolute top-20  left-2 text-xl text-white opacity-80 font-mono p-2">
