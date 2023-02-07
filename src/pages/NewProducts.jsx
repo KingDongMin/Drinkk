@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { addCloudinaryImg } from '../api/cloudinary';
+import { addProduct } from '../api/firebase';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 
 export default function NewProducts() {
     const [image, setImage] = useState('');
+    const [datas, setDatas] = useState({});
+    const [success, setSuccess] = useState(false);
     const [imgError, setImgError] = useState(true);
-    const handleChange = e => {
+
+    const handleAddFile = e => {
         setImgError(false);
         setImage(e.target.files[0]);
     };
@@ -15,16 +20,35 @@ export default function NewProducts() {
         setImgError(true);
     };
 
+    const handleChange = e => {
+        const key = e.target.id;
+        const value = e.target.value;
+        if (key === 'imgFile') return;
+        setDatas({ ...datas, [key]: value });
+    };
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const imgURL = await addCloudinaryImg(image).then(result => result);
+        imgURL && addProduct({ datas, imgURL });
+        addProduct({ datas, imgURL }).then(() => {
+            setSuccess('제품을 성공적으로 추가하였습니다.');
+            setTimeout(() => {
+                setSuccess(false);
+            }, 4000);
+        });
+    };
+
     return (
-        <section className="m-2 p-2 flex flex-col items-center">
+        <section className="m-2 p-2 flex flex-col items-center ">
             <h1
                 className="text-4xl text-center font-bold border-b-2 border-brand border-opacity-50 my-4 py-4 w-2/3
             "
             >
                 제품 추가
             </h1>
-
-            <div className="relative w-4/12 text-center bg-red-200">
+            {success && <p className="text-2xl"> ✅{success}</p>}
+            <div className="relative w-4/12 text-center">
                 {imgError && (
                     <p className="absolute top-20  left-2 text-xl text-white opacity-80 font-mono p-2">
                         이미지 파일을 추가해주세요.
@@ -37,17 +61,17 @@ export default function NewProducts() {
                     onError={handleImgError}
                 />
             </div>
-            <form className="w-full flex flex-col">
+            <form
+                className="w-full flex flex-col"
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+            >
                 <input
+                    id="imgFile"
                     type="file"
                     className="my-4 border-2 p-2 py-4 rounded-md"
+                    onChange={handleAddFile}
                     required
-                    onChange={handleChange}
-                />
-                <Input
-                    id={'테스트'}
-                    text={'테스트 : '}
-                    placeholder={'테스트 입니다.'}
                 />
                 <Input
                     id={'title'}
@@ -56,6 +80,7 @@ export default function NewProducts() {
                 />
                 <Input
                     id={'price'}
+                    type={'number'}
                     text={'제품 가격 : '}
                     placeholder={'가격은 숫자만 입력하세요.'}
                 />

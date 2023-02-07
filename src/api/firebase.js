@@ -1,9 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged  } from "firebase/auth";
-
+import { getDatabase, ref, set} from "firebase/database";
+import {v4 as uuid} from 'uuid'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -20,12 +19,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
-
+const dataBase = getDatabase(app);
 
 export async function googleLogin(){
     signInWithPopup(auth, provider).catch(error=> console.log(`Login error : ${error}`));
 }
-
 
 export async function googleLogout(){
     signOut(auth).catch(error=>console.log(`Logout error : ${error}`))
@@ -40,7 +38,6 @@ function checkAdmin(user){
     return user;
 }
 
-
 export function onAuthState(callback){
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -53,5 +50,15 @@ export function onAuthState(callback){
     })
 }
 
+export async function addProduct({imgURL, datas:{title, price, description, option }}){
+    const id = uuid();
+    return set(ref(dataBase, `products/${id}`),{
+        title: title,
+        imgURL: imgURL,
+        price : price,
+        description : description,
+        option: option
+    }).then(res=>res).catch(error=>{console.log(`ERROR :: addProduct : ${error}`)})
+}
 
 
