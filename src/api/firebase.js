@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged  } from "firebase/auth";
-import { getDatabase, ref, set} from "firebase/database";
+import { getDatabase, ref, set, get} from "firebase/database";
 import {v4 as uuid} from 'uuid'
 
 const firebaseConfig = {
@@ -39,20 +39,21 @@ function checkAdmin(user){
 }
 
 export function onAuthState(callback){
-    onAuthStateChanged(auth, (user) => {
+   onAuthStateChanged(auth, (user) => {
         if (user) {
             const checkUser = checkAdmin(user);
             callback(checkUser);
             return;
         }
         callback(user);
-        return; 
+        return;
     })
 }
 
 export async function addProduct({imgURL, datas:{title, price, description, option }}){
-    const id = uuid();
-    return set(ref(dataBase, `products/${id}`),{
+    const uid = uuid();
+    return set(ref(dataBase, `products/${uid}`),{
+        id:uid,
         title: title,
         imgURL: imgURL,
         price : price,
@@ -61,4 +62,14 @@ export async function addProduct({imgURL, datas:{title, price, description, opti
     }).then(res=>res).catch(error=>{console.log(`ERROR :: addProduct : ${error}`)})
 }
 
-
+export async function getProdcuts(){
+    return get(ref(dataBase, `products`)).then(snapshot=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        }
+        return null;
+    })//
+    .catch(error=>{
+        console.log(error)
+    })
+}

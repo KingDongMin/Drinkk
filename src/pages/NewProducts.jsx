@@ -30,13 +30,13 @@ export default function NewProducts() {
     const handleSubmit = async e => {
         e.preventDefault();
         const imgURL = await addCloudinaryImg(image).then(result => result);
-        imgURL && addProduct({ datas, imgURL });
-        addProduct({ datas, imgURL }).then(() => {
-            setSuccess('제품을 성공적으로 추가하였습니다.');
-            setTimeout(() => {
-                setSuccess(false);
-            }, 4000);
-        });
+        imgURL &&
+            addProduct({ datas, imgURL }).then(() => {
+                setSuccess('제품을 성공적으로 추가하였습니다.');
+                setTimeout(() => {
+                    setSuccess(false);
+                }, 4000);
+            });
     };
 
     return (
