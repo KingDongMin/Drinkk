@@ -1,5 +1,11 @@
 import React from 'react';
+import Products from '../components/Products';
 
 export default function Home() {
-    return <div>home</div>;
+    return (
+        <section className="p-4">
+            <p>home banner</p>
+            <Products />
+        </section>
+    );
 }

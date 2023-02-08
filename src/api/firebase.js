@@ -39,14 +39,14 @@ function checkAdmin(user){
 }
 
 export function onAuthState(callback){
-    onAuthStateChanged(auth, (user) => {
+   onAuthStateChanged(auth, (user) => {
         if (user) {
             const checkUser = checkAdmin(user);
             callback(checkUser);
             return;
         }
         callback(user);
-        return; 
+        return;
     })
 }
 
@@ -63,9 +63,13 @@ export async function addProduct({imgURL, datas:{title, price, description, opti
 }
 
 export async function getProdcuts(){
-    return get(ref(dataBase, `product/drinkk`)).then(snapshot=>{
-        if(snapshot.exist()){
-            console.log(snapshot.val());
+    return get(ref(dataBase, `products`)).then(snapshot=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
         }
+        return null;
+    })//
+    .catch(error=>{
+        console.log(error)
     })
 }
