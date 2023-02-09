@@ -10,6 +10,7 @@ import AllProducts from './pages/AllProducts';
 import NewProducts from './pages/NewProducts';
 import Cart from './pages/Cart';
 import ProtectedRoute from './pages/ProtectedRoute';
+import ProductDetail from './pages/ProductDetail';
 
 
 const router = createBrowserRouter([{
@@ -19,6 +20,7 @@ const router = createBrowserRouter([{
   children:[
     {index:true , element:<Home/>},
     {path:"all", element:<AllProducts/>},
+    {path:"product/:id", element:<ProductDetail/>},
     {path:'new', element://
     <ProtectedRoute requireAdmin>
       <NewProducts/>
