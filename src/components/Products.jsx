@@ -8,7 +8,9 @@ export default function Products() {
         isLoading,
         error,
         data: products,
-    } = useQuery(['products'], () => getProdcuts().then(data => data));
+    } = useQuery(['products'], () => getProdcuts().then(data => data), {
+        staleTime: 1000 * 60 * 10,
+    });
 
     if (isLoading) return <p>로딩중 ...</p>;
     if (error) return <p>Error : {error}</p>;
