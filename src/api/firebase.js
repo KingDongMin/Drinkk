@@ -75,10 +75,11 @@ export async function getProdcuts(){
 }
 
 export async function addCart({uid, product, option}){
-    console.log("addCart 호출")
+    console.log(`addCart 호출 : ${uid} ${product} ${option}`)
     return set(ref(dataBase, `cart/${uid}/${product.id}`),{
         id: product.id,
         title: product.title,
+        price: product.price,
         imgURL : product.imgURL,
         option : option,
         count: 1
@@ -86,6 +87,15 @@ export async function addCart({uid, product, option}){
         return '장바구니에 추가되었습니다.'
     }).catch((error)=>{
         console.log(error)
-        return null
     })
+}
+
+export async function getCart(uid){
+    return get(ref(dataBase, `cart/${uid}`)).then(snapshot=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        }
+        return null;
+    }).catch(error=>console.log(error));
+    
 }
