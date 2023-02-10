@@ -1,11 +1,28 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { addCart } from '../api/firebase';
 import Button from '../components/ui/Button';
+import { useAuthContext } from '../context/authContext';
 
 export default function ProductDetail() {
     const location = useLocation().state.product;
     const [product, setProduct] = useState(location);
     const [options, setOptions] = useState(product.option.split(','));
+    const [option, setOption] = useState();
+    const {
+        user: { uid },
+    } = useAuthContext();
+    const [success, setSucess] = useState(null);
+
+    const handleClick = () => {
+        console.log('버튼클릭');
+        addCart({ uid, product, option }).then(res => {
+            setSucess(res);
+            setTimeout(() => {
+                setSucess(null);
+            }, 4000);
+        });
+    };
     return (
         <section className="w-full flex flex-col md:flex-row">
             <img
@@ -23,8 +40,10 @@ export default function ProductDetail() {
                         옵션 :{' '}
                     </label>
                     <select
+                        onChange={e => setOption(e.target.value)}
                         className="w-full px-4 py-2 my-2 rounded-md"
                         id="option"
+                        value={option}
                     >
                         {options.map((option, index) => {
                             return (
@@ -35,7 +54,8 @@ export default function ProductDetail() {
                         })}
                     </select>
                 </div>
-                <Button text={'장바구니 추가'} />
+                {success && <p>{success}</p>}
+                <Button text={'장바구니 추가'} onClick={handleClick} />
             </div>
         </section>
     );

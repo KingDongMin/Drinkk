@@ -39,7 +39,7 @@ function checkAdmin(user){
 }
 
 export function onAuthState(callback){
-   onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
         if (user) {
             const checkUser = checkAdmin(user);
             callback(checkUser);
@@ -71,5 +71,21 @@ export async function getProdcuts(){
     })//
     .catch(error=>{
         console.log(error)
+    })
+}
+
+export async function addCart({uid, product, option}){
+    console.log("addCart 호출")
+    return set(ref(dataBase, `cart/${uid}/${product.id}`),{
+        id: product.id,
+        title: product.title,
+        imgURL : product.imgURL,
+        option : option,
+        count: 1
+    }).then(()=>{
+        return '장바구니에 추가되었습니다.'
+    }).catch((error)=>{
+        console.log(error)
+        return null
     })
 }
