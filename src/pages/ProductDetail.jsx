@@ -8,12 +8,16 @@ export default function ProductDetail() {
     const location = useLocation().state.product;
     const [product, setProduct] = useState(location);
     const [options, setOptions] = useState(product.option.split(','));
-    const [option, setOption] = useState();
+    const [option, setOption] = useState(options[0]);
     const {
         user: { uid },
     } = useAuthContext();
     const [success, setSucess] = useState(null);
 
+    const handleChange = e => {
+        console.log(e.target.value);
+        setOption(e.target.value);
+    };
     const handleClick = () => {
         console.log('버튼클릭');
         addCart({ uid, product, option }).then(res => {
@@ -40,7 +44,7 @@ export default function ProductDetail() {
                         옵션 :{' '}
                     </label>
                     <select
-                        onChange={e => setOption(e.target.value)}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 my-2 rounded-md"
                         id="option"
                         value={option}
