@@ -21,7 +21,7 @@ export default function Cart() {
 
     return (
         <section className="m-4">
-            <section className="border-2 my-2 rounded-md p-2">
+            <section className="my-2">
                 <CartList carts={carts} />
             </section>
 
