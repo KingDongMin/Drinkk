@@ -105,7 +105,5 @@ export async function updateCount({uid, id, count,item}){
 }
 
 export async function removeCartProduct({uid, id}){
-    console.log("remove 호출")
-    console.log(uid, id)
     remove(ref(dataBase, `cart/${uid}/${id}`))
 }
