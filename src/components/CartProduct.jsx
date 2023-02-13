@@ -3,7 +3,7 @@ import Button from './ui/Button';
 
 export default function CartProduct({ item: { imgURL, title, price, count } }) {
     return (
-        <li className="flex my-4 justify-between items-center p-2 drop-shadow-lg">
+        <li className="flex my-4 justify-between items-center p-2 drop-shadow-lg border-2  rounded-md">
             <div className="flex">
                 <img
                     className="w-28 h-32 object-cover rounded-md"
