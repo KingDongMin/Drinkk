@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged  } from "firebase/auth";
-import { getDatabase, ref, set, get} from "firebase/database";
+import { getDatabase, ref, set, get, remove} from "firebase/database";
 import {v4 as uuid} from 'uuid'
 
 const firebaseConfig = {
@@ -98,4 +98,14 @@ export async function getCart(uid){
         return null;
     }).catch(error=>console.log(error));
     
+}
+
+export async function updateCount({uid, id, count,item}){
+    return set(ref(dataBase, `cart/${uid}/${id}`),{...item, count:count})
+}
+
+export async function removeCartProduct({uid, id}){
+    console.log("remove 호출")
+    console.log(uid, id)
+    remove(ref(dataBase, `cart/${uid}/${id}`))
 }
