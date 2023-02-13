@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from './ui/Button';
 import Profile from './Profile';
-import { BsCupStraw, BsFillCartFill, BsUpload } from 'react-icons/bs';
+import { BsCupStraw, BsUpload } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-
+import CartIcon from './ui/CartIcon';
 import { useAuthContext } from '../context/authContext';
 
 export default function Navbar() {
@@ -28,7 +28,7 @@ export default function Navbar() {
                     <li>
                         {user && (
                             <Link to={'cart'}>
-                                <BsFillCartFill />
+                                <CartIcon />
                             </Link>
                         )}
                     </li>
