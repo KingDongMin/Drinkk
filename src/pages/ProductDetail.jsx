@@ -5,9 +5,8 @@ import Button from '../components/ui/Button';
 import { useAuthContext } from '../context/authContext';
 
 export default function ProductDetail() {
-    const location = useLocation().state.product;
-    const [product, setProduct] = useState(location);
-    const [options, setOptions] = useState(product.option.split(','));
+    const product = useLocation().state.product;
+    const options = product.option.split(',');
     const [option, setOption] = useState(options[0]);
     const {
         user: { uid },
@@ -15,11 +14,9 @@ export default function ProductDetail() {
     const [success, setSucess] = useState(null);
 
     const handleChange = e => {
-        console.log(e.target.value);
         setOption(e.target.value);
     };
     const handleClick = () => {
-        console.log('버튼클릭');
         addCart({ uid, product, option }).then(res => {
             setSucess(res);
             setTimeout(() => {

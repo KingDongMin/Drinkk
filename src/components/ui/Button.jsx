@@ -8,6 +8,7 @@ export default function Button({ text, onClick, className }) {
                 className
             }
             onClick={onClick}
+            value={text}
         >
             {text}
         </button>
