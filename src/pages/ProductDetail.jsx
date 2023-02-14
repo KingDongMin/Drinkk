@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { addCart } from '../api/firebase';
 import Button from '../components/ui/Button';
 import { useAuthContext } from '../context/authContext';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ProductDetail() {
     const product = useLocation().state.product;
@@ -12,6 +13,7 @@ export default function ProductDetail() {
         user: { uid },
     } = useAuthContext();
     const [success, setSucess] = useState(null);
+    const queryClient = useQueryClient(['cart' + uid]);
 
     const handleChange = e => {
         setOption(e.target.value);
@@ -23,6 +25,7 @@ export default function ProductDetail() {
                 setSucess(null);
             }, 4000);
         });
+        queryClient.invalidateQueries(['cart' + uid]);
     };
     return (
         <section className="w-full flex flex-col md:flex-row">
