@@ -16,7 +16,7 @@ export default function NewProducts() {
     };
 
     const handleImgError = e => {
-        e.target.src = './img/drink_sample_photo.jpg';
+        e.target.src = './img/great-cocktails-9PyQwwmZxpI-unsplash.jpg';
         setImgError(true);
     };
 

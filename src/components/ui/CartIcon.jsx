@@ -13,9 +13,11 @@ export default function CartIcon() {
     return (
         <div className="relative">
             <BsFillCartFill />
-            <div className="absolute bg-brand w-5 h-5  flex items-center justify-center top-[-10px] left-3 text-sm text-white rounded-full ">
-                <span>{carts.length}</span>
-            </div>
+            {carts && (
+                <div className="absolute bg-brand w-5 h-5  flex items-center justify-center top-[-10px] left-3 text-sm text-white rounded-full ">
+                    <span>{carts.length}</span>
+                </div>
+            )}
         </div>
     );
 }
