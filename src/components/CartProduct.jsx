@@ -24,7 +24,6 @@ export default function CartProduct({
             preCount > 1 && --preCount;
         }
         setCountVal(preCount);
-        console.log(preCount);
         updateCount({ uid, id, count: preCount, item });
     };
 

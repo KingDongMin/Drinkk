@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { addCloudinaryImg } from '../api/cloudinary';
-import { addProduct } from '../api/firebase';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import useProducts from '../hooks/useProducts';
 
 export default function NewProducts() {
     const [image, setImage] = useState('');
     const [datas, setDatas] = useState({});
     const [success, setSuccess] = useState(false);
     const [imgError, setImgError] = useState(true);
+    const { addProducts } = useProducts();
 
     const handleAddFile = e => {
         setImgError(false);
@@ -29,14 +30,19 @@ export default function NewProducts() {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const imgURL = await addCloudinaryImg(image).then(result => result);
-        imgURL &&
-            addProduct({ datas, imgURL }).then(() => {
-                setSuccess('제품을 성공적으로 추가하였습니다.');
-                setTimeout(() => {
-                    setSuccess(false);
-                }, 4000);
-            });
+        addCloudinaryImg(image).then(imgURL =>
+            addProducts.mutate(
+                { datas, imgURL },
+                {
+                    onSuccess: () => {
+                        setSuccess('제품을 성공적으로 추가하였습니다.');
+                        setTimeout(() => {
+                            setSuccess(false);
+                        }, 4000);
+                    },
+                }
+            )
+        );
     };
 
     return (
