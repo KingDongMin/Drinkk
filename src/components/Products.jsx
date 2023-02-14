@@ -1,16 +1,11 @@
 import React from 'react';
-import { getProdcuts } from '../api/firebase';
+import useProducts from '../hooks/useProducts';
 import ProductCard from './ProductCard';
-import { useQuery } from '@tanstack/react-query';
 
 export default function Products() {
     const {
-        isLoading,
-        error,
-        data: products,
-    } = useQuery(['products'], () => getProdcuts().then(data => data), {
-        staleTime: 1000 * 60 * 10,
-    });
+        getProductsQuery: { isLoading, error, data: products },
+    } = useProducts();
 
     if (isLoading) return <p>로딩중 ...</p>;
     if (error) return <p>Error : {error}</p>;
