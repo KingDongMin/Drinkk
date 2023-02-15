@@ -1,10 +1,11 @@
 import React from 'react';
 import Products from '../components/Products';
+import Banner from '../components/Banner';
 
 export default function Home() {
     return (
         <section className="p-4">
-            <p>home banner</p>
+            <Banner />
             <Products />
         </section>
     );
