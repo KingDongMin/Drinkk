@@ -75,7 +75,6 @@ export async function getProdcuts(){
 }
 
 export async function addCart({uid, product, option}){
-    console.log(`addCart 호출 : ${uid} ${product} ${option}`)
     return set(ref(dataBase, `cart/${uid}/${product.id}`),{
         id: product.id,
         title: product.title,
@@ -106,4 +105,16 @@ export async function updateCount({uid, id, count,item}){
 
 export async function removeCartProduct({uid, id}){
     remove(ref(dataBase, `cart/${uid}/${id}`))
+}
+
+export async function getBanner(){
+    return get(ref(dataBase, 'banner')).then(snapshot=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        }
+        return null;
+    })//
+    .catch(error=>{
+        console.log(error)
+    })
 }
