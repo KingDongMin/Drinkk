@@ -4,28 +4,46 @@ import { addCart } from '../api/firebase';
 import Button from '../components/ui/Button';
 import { useAuthContext } from '../context/authContext';
 import { useQueryClient } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 
 export default function ProductDetail() {
     const product = useLocation().state.product;
     const options = product.option.split(',');
     const [option, setOption] = useState(options[0]);
-    const {
-        user: { uid },
-    } = useAuthContext();
+    const { user } = useAuthContext();
     const [success, setSucess] = useState(null);
-    const queryClient = useQueryClient(['cart' + uid]);
+    const queryClient = useQueryClient();
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        didOpen: toast => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+    });
 
     const handleChange = e => {
         setOption(e.target.value);
     };
     const handleClick = () => {
-        addCart({ uid, product, option }).then(res => {
+        if (!user) {
+            Toast.fire({
+                icon: 'error',
+                title: '로그인 후 이용할 수 있습니다.',
+            });
+            return;
+        }
+        addCart({ uid: user.uid, product, option }).then(res => {
             setSucess(res);
             setTimeout(() => {
                 setSucess(null);
             }, 4000);
         });
-        queryClient.invalidateQueries(['cart' + uid]);
+        queryClient.invalidateQueries(['cart' + user.uid]);
     };
     return (
         <section className="w-full flex flex-col md:flex-row">
