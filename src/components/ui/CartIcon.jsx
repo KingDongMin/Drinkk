@@ -11,12 +11,19 @@ export default function CartIcon() {
     const { data: carts } = useQuery(['cart' + uid], () => getCart(uid));
 
     return (
-        <div className="relative">
+        <div className="relative text-xl">
             <BsFillCartFill />
             {carts && (
-                <div className="absolute bg-brand w-5 h-5  flex items-center justify-center top-[-10px] left-3 text-sm text-white rounded-full ">
-                    <span>{carts.length}</span>
-                </div>
+                <span
+                    className=" 
+                    absolute text-xs font-mono
+                    top-[-11px] left-[12px]
+                    bg-brand px-[5px]
+                    text-center rounded-full
+                    text-white"
+                >
+                    {carts.length}
+                </span>
             )}
         </div>
     );

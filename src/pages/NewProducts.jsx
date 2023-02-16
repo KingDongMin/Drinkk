@@ -48,7 +48,7 @@ export default function NewProducts() {
     return (
         <section className="m-2 p-2 flex flex-col items-center ">
             <h1
-                className="text-4xl text-center font-bold border-b-2 border-brand border-opacity-50 my-4 py-4 w-2/3
+                className="text-3xl text-center font-bold border-b-2 border-brand border-opacity-50 my-4 py-4 w-2/3
             "
             >
                 제품 추가
@@ -56,7 +56,7 @@ export default function NewProducts() {
             {success && <p className="text-2xl"> ✅{success}</p>}
             <div className="relative w-4/12 text-center">
                 {imgError && (
-                    <p className="absolute top-20  left-2 text-xl text-white opacity-80 font-mono p-2">
+                    <p className="absolute top-20  left-2 text-base text-white opacity-80 font-bold md:text-lg p-2">
                         이미지 파일을 추가해주세요.
                     </p>
                 )}

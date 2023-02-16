@@ -7,12 +7,12 @@ import {
 export default function useCarts({ uid }) {
     const queryClient = useQueryClient();
 
-    const getCarts = useQuery(['cart' + uid], fetchGetCarts(uid), {
+    const getCarts = useQuery(['cart' + uid], () => fetchGetCarts(uid), {
         staleTime: 1000 * 60 * 10,
     });
 
     const addCarts = useMutation(
-        ({ uid, product, option }) => fetchAddCarts({ uid, product, option }),
+        ({ product, option }) => fetchAddCarts({ uid, product, option }),
         {
             onSuccess: () => queryClient.invalidateQueries(['cart' + uid]),
         }

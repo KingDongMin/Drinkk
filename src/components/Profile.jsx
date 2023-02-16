@@ -2,18 +2,15 @@ import React from 'react';
 
 export default function Profile({ user: { displayName, photoURL } }) {
     return (
-        <div className="flex shrink-0 items-center">
+        <div className="flex items-center">
             <img
-                className="w-12 object-fill rounded-full mr-2"
+                className="w-8 md:w-10 rounded-full "
                 src={photoURL}
                 alt={displayName}
             />
-            <p
-                className="text-sm hidden font-semibold
-            md:block"
-            >
+            <span className="hidden ml-2 md:block font-semibold opacity-70">
                 {displayName}
-            </p>
+            </span>
         </div>
     );
 }
