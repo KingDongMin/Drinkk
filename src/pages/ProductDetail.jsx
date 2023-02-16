@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { addCart } from '../api/firebase';
 import Button from '../components/ui/Button';
 import { useAuthContext } from '../context/authContext';
-import { useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import useCarts from '../hooks/useCarts';
 
 export default function ProductDetail() {
     const product = useLocation().state.product;
@@ -12,7 +11,7 @@ export default function ProductDetail() {
     const [option, setOption] = useState(options[0]);
     const { user } = useAuthContext();
     const [success, setSucess] = useState(null);
-    const queryClient = useQueryClient();
+    const { addCarts } = useCarts({ uid: user ? user.uid : '' });
 
     const Toast = Swal.mixin({
         toast: true,
@@ -37,13 +36,24 @@ export default function ProductDetail() {
             });
             return;
         }
-        addCart({ uid: user.uid, product, option }).then(res => {
-            setSucess(res);
-            setTimeout(() => {
-                setSucess(null);
-            }, 4000);
-        });
-        queryClient.invalidateQueries(['cart' + user.uid]);
+        addCarts.mutate(
+            { uid: user.uid, product, option },
+            {
+                onSuccess: res => {
+                    setSucess(res);
+                    setTimeout(() => {
+                        setSucess(null);
+                    }, 4000);
+                },
+            }
+        );
+        // addCart({ uid: user.uid, product, option }).then(res => {
+        //     setSucess(res);
+        //     setTimeout(() => {
+        //         setSucess(null);
+        //     }, 4000);
+        // });
+        // queryClient.invalidateQueries(['cart' + user.uid]);
     };
     return (
         <section className="w-full flex flex-col md:flex-row">
