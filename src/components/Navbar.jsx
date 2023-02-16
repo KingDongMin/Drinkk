@@ -6,44 +6,55 @@ import { Link } from 'react-router-dom';
 import CartIcon from './ui/CartIcon';
 import { useAuthContext } from '../context/authContext';
 
+const HOVER = 'hover:scale-95 hover:opacity-80 hover:text-brand';
+
 export default function Navbar() {
     const { user, googleLogin, googleLogout } = useAuthContext();
 
     return (
-        <nav className="flex justify-between p-4 mb-4 items-center border-b-2">
+        <nav className="flex w-full justify-between p-4 mb-4 items-center border-b-2 sticky top-0 z-10 bg-white text-sm">
             <Link to={'/'}>
                 <div
-                    className="flex text-3xl font-bold items-center
-            text-brand"
+                    className="flex font-bold items-center
+            text-brand md:text-3xl text-xl"
                 >
-                    <BsCupStraw className="text-4xl mr-2" />
-                    <h1>Drinkk</h1>
+                    <BsCupStraw className=" mr-2" />
+                    <h1 className="">Drinkk</h1>
                 </div>
             </Link>
-            <div className="flex gap-2">
-                <ul className="flex text-xl gap-4 items-center font-semibold">
-                    <li>
-                        <Link to={'all'}>Drinks</Link>
+
+            <ul className="flex items-center gap-2 md:gap-4 md:text-xl font-semibold">
+                <li className={HOVER}>
+                    <Link to={'all'}>Drinks</Link>
+                </li>
+
+                {user && (
+                    <li className={`mr-2 ${HOVER}`}>
+                        <Link to={'cart'}>
+                            <CartIcon />
+                        </Link>
                     </li>
-                    <li>
-                        {user && (
-                            <Link to={'cart'}>
-                                <CartIcon />
-                            </Link>
-                        )}
+                )}
+
+                {user && user.isAdmin && (
+                    <li className={HOVER}>
+                        <Link to={'new'}>
+                            <BsUpload />
+                        </Link>
                     </li>
+                )}
+
+                {user && (
                     <li>
-                        {user && user.isAdmin && (
-                            <Link to={'new'}>
-                                <BsUpload />
-                            </Link>
-                        )}
+                        {' '}
+                        <Profile user={user} />
                     </li>
-                </ul>
-                {user && <Profile user={user} />}
-                {!user && <Button text={'Login'} onClick={googleLogin} />}
-                {user && <Button text={'LogOut'} onClick={googleLogout} />}
-            </div>
+                )}
+                <li>
+                    {!user && <Button text={'Login'} onClick={googleLogin} />}
+                    {user && <Button text={'LogOut'} onClick={googleLogout} />}
+                </li>
+            </ul>
         </nav>
     );
 }

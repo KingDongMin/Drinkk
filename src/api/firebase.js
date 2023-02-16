@@ -104,7 +104,7 @@ export async function updateCount({uid, id, count,item}){
 }
 
 export async function removeCartProduct({uid, id}){
-    remove(ref(dataBase, `cart/${uid}/${id}`))
+    return remove(ref(dataBase, `cart/${uid}/${id}`))
 }
 
 export async function getBanner(){

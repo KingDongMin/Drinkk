@@ -3,7 +3,7 @@ import Products from '../components/Products';
 
 export default function AllProducts() {
     return (
-        <section className="w-full p-4">
+        <section className="m-4 px-4">
             <Products />
         </section>
     );
