@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { removeCartProduct, updateCount } from '../api/firebase';
 import { useAuthContext } from '../context/authContext';
-import Button from './ui/Button';
+// import Button from './ui/Button';
 import { useQueryClient } from '@tanstack/react-query';
 import {
     AiOutlineMinusSquare,
